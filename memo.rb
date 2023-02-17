@@ -28,10 +28,8 @@ get '/memos/:uuid' do
   parsed_json = open_parsed_json(JSON_PATH)
 
   @memo_uuid = params[:uuid]
-  memo_detail = parsed_json[@memo_uuid]
-
-  @memo_title = memo_detail['title']
-  @memo_content = memo_detail['content']
+  @memo_title = parsed_json[@memo_uuid]['title']
+  @memo_content = parsed_json[@memo_uuid]['content']
   
   erb :detail
 end
