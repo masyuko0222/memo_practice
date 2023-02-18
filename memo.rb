@@ -12,7 +12,7 @@ get '/memos' do
 
   create_new_json(JSON_PATH) unless File.exist?(JSON_PATH)
 
-  @parsed_json = open_parsed_json(JSON_PATH)
+  @parsed_json = parse_json(JSON_PATH)
 
   erb :memos
 end
@@ -25,19 +25,18 @@ get '/memos/new' do
 end
 
 get '/memos/:uuid' do
-  parsed_json = open_parsed_json(JSON_PATH)
+  parsed_json = parse_json(JSON_PATH)
+
   @memo_uuid = params[:uuid]
-  @memo_title = parsed_json[@memo_uuid]['title']
-  @memo_content = parsed_json[@memo_uuid]['content']
-  
+  @memo_title, @memo_content = load_memo_details(parsed_json, @memo_uuid)
+
   erb :detail
 end
 
 get '/memos/:uuid/edit' do
-  parsed_json = open_parsed_json(JSON_PATH)
+  parsed_json = parse_json(JSON_PATH)
   @memo_uuid = params[:uuid]
-  @memo_title = parsed_json[@memo_uuid]['title']
-  @memo_content = parsed_json[@memo_uuid]['content']
+  @memo_title, @memo_content = load_memo_details(parsed_json, @memo_uuid)
 
   erb :edit
 end
@@ -48,7 +47,7 @@ post '/memos' do
   memo_title = params[:memo_title]
   memo_content = params[:memo_content]
 
-  parsed_json = open_parsed_json(JSON_PATH)
+  parsed_json = parse_json(JSON_PATH)
 
   # add new memo data
   parsed_json[memo_uuid] = { 'title' => memo_title, 'content' => memo_content }
@@ -62,7 +61,7 @@ patch '/memos/:uuid' do
   memo_title = params[:memo_title]
   memo_content = params[:memo_content]
 
-  parsed_json = open_parsed_json(JSON_PATH)
+  parsed_json = parse_json(JSON_PATH)
   parsed_json[memo_uuid] = { 'title' => memo_title, 'content' => memo_content }
   overwrite_json(parsed_json, JSON_PATH)
 
@@ -70,7 +69,7 @@ patch '/memos/:uuid' do
 end
 
 delete '/memos/:uuid' do
-  parsed_json = open_parsed_json(JSON_PATH)
+  parsed_json = parse_json(JSON_PATH)
 
   memo_uuid = params[:uuid]
 
@@ -89,7 +88,7 @@ def create_new_json(json_path)
   overwrite_json(hash, json_path)
 end
 
-def open_parsed_json(json_path)
+def parse_json(json_path)
   File.open(json_path) do |file|
     JSON.parse(file.read)
   end
@@ -99,4 +98,10 @@ def overwrite_json(hash, json_path)
   File.open(json_path, 'w') do |file|
     JSON.dump(hash, file)
   end
+end
+
+def load_memo_details(hash, memo_uuid)
+  memo_details = hash[memo_uuid]
+
+  [memo_details['title'] , memo_details['content']]
 end
