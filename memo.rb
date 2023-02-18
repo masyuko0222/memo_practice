@@ -27,7 +27,7 @@ end
 get '/memos/:uuid' do
   parsed_json = parse_json(JSON_PATH)
 
-  @memo_uuid = params[:uuid]
+  @memo_uuid, = recieve_memo_details(params)
   @memo_title, @memo_content = load_memo_details(parsed_json, @memo_uuid)
 
   erb :detail
@@ -35,7 +35,7 @@ end
 
 get '/memos/:uuid/edit' do
   parsed_json = parse_json(JSON_PATH)
-  @memo_uuid = params[:uuid]
+  @memo_uuid, = recieve_memo_details(params)
   @memo_title, @memo_content = load_memo_details(parsed_json, @memo_uuid)
 
   erb :edit
@@ -44,8 +44,7 @@ end
 # POST,PATCH,DELETE methods
 post '/memos' do
   memo_uuid = SecureRandom.uuid.to_s
-  memo_title = params[:memo_title]
-  memo_content = params[:memo_content]
+  *, memo_title, memo_content = recieve_memo_details(params)
 
   parsed_json = parse_json(JSON_PATH)
 
@@ -104,4 +103,8 @@ def load_memo_details(hash, memo_uuid)
   memo_details = hash[memo_uuid]
 
   [memo_details['title'] , memo_details['content']]
+end
+
+def recieve_memo_details(params)
+  [params[:uuid], params[:memo_title], params[:memo_content]]
 end
