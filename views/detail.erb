@@ -1,10 +1,16 @@
-<form action='/memos/<%= @memo_uuid %>' method='POST'>
-<div>
+<form action='/memos/<%= @memo_uuid %>/edit' method='GET'>
+  <div>
     <input type='text' name='memo_title' value=<%= @memo_title %> readonly>
   </div>
   <div>
     <textarea name='memo_content' readonly><%= @memo_content %></textarea>
   </div>
+  <div>
+    <input type='submit' value='編集'>
+  </div>
+</form>
+
+<form action='/memos/<%= @memo_uuid %>' method='POST'>
   <div>
     <input type='hidden' name='_method' value='DELETE'>
     <input type='submit' value='削除'>
