@@ -26,7 +26,6 @@ end
 
 get '/memos/:uuid' do
   parsed_json = open_parsed_json(JSON_PATH)
-
   @memo_uuid = params[:uuid]
   @memo_title = parsed_json[@memo_uuid]['title']
   @memo_content = parsed_json[@memo_uuid]['content']
@@ -34,7 +33,16 @@ get '/memos/:uuid' do
   erb :detail
 end
 
-# POST methods
+get '/memos/:uuid/edit' do
+  parsed_json = open_parsed_json(JSON_PATH)
+  @memo_uuid = params[:uuid]
+  @memo_title = parsed_json[@memo_uuid]['title']
+  @memo_content = parsed_json[@memo_uuid]['content']
+
+  erb :edit
+end
+
+# POST,PATCH,DELETE methods
 post '/memos' do
   memo_uuid = SecureRandom.uuid.to_s
   memo_title = params[:memo_title]
@@ -49,7 +57,18 @@ post '/memos' do
   redirect '/memos'
 end
 
-# DELETE method
+patch '/memos/:uuid' do
+  memo_uuid = params[:uuid]
+  memo_title = params[:memo_title]
+  memo_content = params[:memo_content]
+
+  parsed_json = open_parsed_json(JSON_PATH)
+  parsed_json[memo_uuid] = { 'title' => memo_title, 'content' => memo_content }
+  overwrite_json(parsed_json, JSON_PATH)
+
+  redirect '/memos'
+end
+
 delete '/memos/:uuid' do
   parsed_json = open_parsed_json(JSON_PATH)
 
