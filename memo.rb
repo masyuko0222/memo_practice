@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'securerandom'
+require 'cgi/escape'
 
 JSON_PATH = './public/memos.json'
 
@@ -49,17 +50,18 @@ post '/memos' do
 
   # add new memo data
   parsed_json = parse_json(JSON_PATH)
-  parsed_json[memo_uuid] = { 'title' => memo_title, 'content' => memo_content }
+  parsed_json[memo_uuid] = { 'title' => CGI.escapeHTML(memo_title), 'content' => CGI.escapeHTML(memo_content) }
   overwrite_json(parsed_json, JSON_PATH)
 
   redirect '/memos'
 end
 
 patch '/memos/:uuid' do
-  memo_uuid, memo_title, memo_content = recieve_details_from_form
+  memo_uuid = params[:uuid]
+  memo_title, memo_content = recieve_details_from_form
 
   parsed_json = parse_json(JSON_PATH)
-  parsed_json[memo_uuid] = { 'title' => memo_title, 'content' => memo_content }
+  parsed_json[memo_uuid] = { 'title' => CGI.escapeHTML(memo_title), 'content' => CGI.escapeHTML(memo_content) }
   overwrite_json(parsed_json, JSON_PATH)
 
   redirect '/memos'
@@ -100,7 +102,7 @@ end
 def load_details_from_json(hash, memo_uuid)
   memo_details = hash[memo_uuid]
 
-  [memo_details['title'] , memo_details['content']]
+  [CGI.escapeHTML(memo_details['title']) , CGI.escapeHTML(memo_details['content'])]
 end
 
 def recieve_details_from_form
