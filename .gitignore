@@ -1,2 +1,3 @@
 public/memos.json
 .rubocop.yml
+.erb-lint.yml
