@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
@@ -26,6 +28,9 @@ get '/memos/new' do
 end
 
 get '/memos/:uuid' do
+  @title = 'detail'
+  @header = 'メモ内容'
+
   parsed_json = parse_json(JSON_PATH)
 
   @memo_uuid = params[:uuid]
@@ -35,6 +40,9 @@ get '/memos/:uuid' do
 end
 
 get '/memos/:uuid/edit' do
+  @title = 'edit'
+  @header = 'メモ編集'
+
   parsed_json = parse_json(JSON_PATH)
 
   @memo_uuid = params[:uuid]
@@ -102,7 +110,7 @@ end
 def load_details_from_json(hash, memo_uuid)
   memo_details = hash[memo_uuid]
 
-  [CGI.escapeHTML(memo_details['title']) , CGI.escapeHTML(memo_details['content'])]
+  [CGI.escapeHTML(memo_details['title']), CGI.escapeHTML(memo_details['content'])]
 end
 
 def recieve_details_from_form

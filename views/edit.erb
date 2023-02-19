@@ -1,12 +1,12 @@
 <form action='/memos/<%= @memo_uuid %>' method='POST'>
   <div>
-    <input type='text' name='memo_title' value=<%= @memo_title %>>
+    <input type='text' name='memo_title' value=<%= @memo_title %> class='textbox'>
   </div>
   <div>
-    <textarea name='memo_content'><%= @memo_content %></textarea>
+    <textarea name='memo_content' class='textarea'><%= @memo_content %></textarea>
   </div>
   <div>
     <input type='hidden' name='_method' value='PATCH'>
-    <input type='submit' value='変更'>
+    <input type='submit' value='保存' class='button'>
   </div>
 </form>
