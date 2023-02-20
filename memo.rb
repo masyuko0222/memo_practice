@@ -56,10 +56,8 @@ post '/memos' do
   memo_uuid = SecureRandom.uuid.to_s
   memo_title, memo_content = recieve_details_from_form
 
-  # add new memo data
-  parsed_json = parse_json(JSON_PATH)
-  parsed_json[memo_uuid] = { 'title' => CGI.escapeHTML(memo_title), 'content' => CGI.escapeHTML(memo_content) }
-  overwrite_json(parsed_json, JSON_PATH)
+  # create new memo data
+  create_or_update_memo(JSON_PATH, memo_uuid, memo_title, memo_content)
 
   redirect '/memos'
 end
@@ -68,9 +66,8 @@ patch '/memos/:uuid' do
   memo_uuid = params[:uuid]
   memo_title, memo_content = recieve_details_from_form
 
-  parsed_json = parse_json(JSON_PATH)
-  parsed_json[memo_uuid] = { 'title' => CGI.escapeHTML(memo_title), 'content' => CGI.escapeHTML(memo_content) }
-  overwrite_json(parsed_json, JSON_PATH)
+  # update memo
+  create_or_update_memo(JSON_PATH, memo_uuid, memo_title, memo_content)
 
   redirect '/memos'
 end
@@ -93,6 +90,12 @@ def create_new_json(json_path)
   hash = {}
 
   overwrite_json(hash, json_path)
+end
+
+def create_or_update_memo(json_path, memo_uuid, memo_title, memo_content)
+  parsed_json = parse_json(json_path)
+  parsed_json[memo_uuid] = { 'title' => CGI.escapeHTML(memo_title), 'content' => CGI.escapeHTML(memo_content) }
+  overwrite_json(parsed_json, json_path)
 end
 
 def parse_json(json_path)
