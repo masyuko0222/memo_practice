@@ -62,8 +62,6 @@ post '/memos' do
 end
 
 patch '/memos/:uuid' do
-  memo_uuid = params[:uuid]
-
   # update memo
   create_or_update_memo(JSON_PATH, params[:uuid], params[:memo_title], params[:memo_content])
 
