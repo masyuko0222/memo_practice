@@ -94,7 +94,7 @@ end
 
 def create_or_update_memo(json_path, memo_uuid, memo_title, memo_content)
   parsed_json = parse_json(json_path)
-  parsed_json[memo_uuid] = { 'title' => CGI.escapeHTML(memo_title), 'content' => CGI.escapeHTML(memo_content) }
+  parsed_json[memo_uuid] = { 'title' => memo_title, 'content' => memo_content }
   overwrite_json(parsed_json, json_path)
 end
 
@@ -113,7 +113,7 @@ end
 def load_details_from_json(hash, memo_uuid)
   memo_details = hash[memo_uuid]
 
-  [CGI.escapeHTML(memo_details['title']), CGI.escapeHTML(memo_details['content'])]
+  [memo_details['title'], memo_details['content']]
 end
 
 def recieve_details_from_form
