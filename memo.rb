@@ -54,20 +54,18 @@ end
 # POST,PATCH,DELETE methods
 post '/memos' do
   memo_uuid = SecureRandom.uuid.to_s
-  memo_title, memo_content = recieve_details_from_form
 
   # create new memo data
-  create_or_update_memo(JSON_PATH, memo_uuid, memo_title, memo_content)
+  create_or_update_memo(JSON_PATH, memo_uuid, params[:memo_title], params[:memo_content])
 
   redirect '/memos'
 end
 
 patch '/memos/:uuid' do
   memo_uuid = params[:uuid]
-  memo_title, memo_content = recieve_details_from_form
 
   # update memo
-  create_or_update_memo(JSON_PATH, memo_uuid, memo_title, memo_content)
+  create_or_update_memo(JSON_PATH, params[:uuid], params[:memo_title], params[:memo_content])
 
   redirect '/memos'
 end
@@ -114,8 +112,4 @@ def load_details_from_json(hash, memo_uuid)
   memo_details = hash[memo_uuid]
 
   [memo_details['title'], memo_details['content']]
-end
-
-def recieve_details_from_form
-  [params[:memo_title], params[:memo_content]]
 end
