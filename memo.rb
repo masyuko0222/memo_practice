@@ -34,7 +34,11 @@ get '/memos/:uuid' do
   parsed_json = parse_json(JSON_PATH)
 
   @memo_uuid = params[:uuid]
-  @memo_title, @memo_content = load_details_from_json(parsed_json, @memo_uuid)
+
+  memo_details = parsed_json[@memo_uuid]
+
+  @memo_title = memo_details['title']
+  @memo_content = memo_details['content']
 
   erb :detail
 end
@@ -46,7 +50,11 @@ get '/memos/:uuid/edit' do
   parsed_json = parse_json(JSON_PATH)
 
   @memo_uuid = params[:uuid]
-  @memo_title, @memo_content = load_details_from_json(parsed_json, @memo_uuid)
+
+  memo_details = parsed_json[@memo_uuid]
+
+  @memo_title = memo_details['title']
+  @memo_content = memo_details['content']
 
   erb :edit
 end
@@ -102,10 +110,4 @@ def overwrite_json(hash, json_path)
   File.open(json_path, 'w') do |file|
     JSON.dump(hash, file)
   end
-end
-
-def load_details_from_json(hash, memo_uuid)
-  memo_details = hash[memo_uuid]
-
-  [memo_details['title'], memo_details['content']]
 end
