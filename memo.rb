@@ -81,8 +81,6 @@ end
 
 # define original methods
 def create_new_json(json_path)
-  File.new(json_path, 'w')
-
   hash = {}
 
   overwrite_json(hash, json_path)
