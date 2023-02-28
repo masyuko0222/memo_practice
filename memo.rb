@@ -88,12 +88,6 @@ delete '/memos/:uuid' do
 end
 
 # define original methods
-def create_new_json(json_path)
-  hash = {}
-
-  write_in_json(hash, json_path)
-end
-
 def create_or_update_memo(json_path, memo_uuid, memo_title, memo_content)
   parsed_json = parse_json(json_path)
   parsed_json[memo_uuid] = { 'title' => memo_title, 'content' => memo_content }
