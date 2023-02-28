@@ -13,7 +13,7 @@ get '/memos' do
   @title = 'memos'
   @header = 'メモ一覧'
 
-  create_new_json(JSON_PATH) unless File.exist?(JSON_PATH)
+  write_in_json({}, JSON_PATH) unless File.exist?(JSON_PATH)
 
   @parsed_json = parse_json(JSON_PATH)
 
@@ -82,7 +82,7 @@ delete '/memos/:uuid' do
   memo_uuid = params[:uuid]
 
   parsed_json.delete(memo_uuid)
-  overwrite_json(parsed_json, JSON_PATH)
+  write_in_json(parsed_json, JSON_PATH)
 
   redirect '/memos'
 end
@@ -91,13 +91,13 @@ end
 def create_new_json(json_path)
   hash = {}
 
-  overwrite_json(hash, json_path)
+  write_in_json(hash, json_path)
 end
 
 def create_or_update_memo(json_path, memo_uuid, memo_title, memo_content)
   parsed_json = parse_json(json_path)
   parsed_json[memo_uuid] = { 'title' => memo_title, 'content' => memo_content }
-  overwrite_json(parsed_json, json_path)
+  write_in_json(parsed_json, json_path)
 end
 
 def parse_json(json_path)
@@ -106,7 +106,7 @@ def parse_json(json_path)
   end
 end
 
-def overwrite_json(hash, json_path)
+def write_in_json(hash, json_path)
   File.open(json_path, 'w') do |file|
     JSON.dump(hash, file)
   end
