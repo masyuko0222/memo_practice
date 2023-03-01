@@ -1,0 +1,35 @@
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+h1 {
+  display: inline-block;
+}
+
+.button, .textbox, .textarea{
+  font-family: inherit;
+}
+
+.button {
+  margin: 7px;
+}
+
+.textbox, .textarea {
+  width: 300px;
+  height: 30px;
+  font-size: 30px;
+  padding: 3px 7px;
+  margin: 7px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+}
+
+.textarea {
+  height: 200px;
+}
+
+#readonly {
+  border: none;
+  outline: none;
+}

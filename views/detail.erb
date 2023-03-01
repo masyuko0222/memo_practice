@@ -1,0 +1,17 @@
+<form action='/memos/<%= @memo_uuid %>/edit' method='GET'>
+  <div>
+    <input type='text' name='memo_title' value='<%= CGI.escapeHTML(@memo_title) %>' readonly class='textbox' id='readonly'>
+  </div>
+  <div>
+    <textarea name='memo_content' readonly class='textarea' id='readonly'><%= CGI.escapeHTML(@memo_content) %></textarea>
+  </div>
+  <div>
+    <input type='submit' value='編集' class='button'>
+  </div>
+</form>
+<form action='/memos/<%= @memo_uuid %>' method='POST'>
+    <input type='hidden' name='_method' value='DELETE'>
+  <div>
+    <input type='submit' value='削除' class='button'>
+  </div>
+</form>

@@ -1,0 +1,13 @@
+<form action='/memos/new' method='GET'>
+  <div>
+    <button>追加</button>
+  </div>
+</form>
+
+<% @parsed_json.each do |uuid, memo_detail| %>
+  <div>
+    <ul>
+      <a href='/memos/<%= uuid %>'><li><%= CGI.escapeHTML(memo_detail["title"]) %></li></a>
+    </ul>
+  </div>
+<% end %>
