@@ -12,8 +12,17 @@ CONN = PG::Connection.new(DB_URI)
 
 # Helpers method
 helpers do
+  def create_new_table
+    CONN.exec('CREATE TABLE memos (memo_uuid VARCHAR(100) NOT NULL, memo_title VARCHAR(100) NOT NULL, memo_content VARCHAR(500), PRIMARY KEY (memo_uuid))')
+  end
+
+  def exist_memos_table?
+    result = CONN.exec_params('SELECT table_name FROM information_schema.tables WHERE table_name = \'memos\'')
+    result.one?
+  end
+
   def select_all_memos
-    CONN.exec_params('SELECT * FROM memos')
+    CONN.exec('SELECT * FROM memos')
   end
 
   def select_details(memo_uuid)
@@ -31,6 +40,11 @@ helpers do
   def delete_memo(memo_uuid)
     CONN.exec_params('DELETE FROM memos WHERE memo_uuid = $1', [memo_uuid])
   end
+end
+
+# BEFORE filter
+before do
+  create_new_table unless exist_memos_table?
 end
 
 # GET methods
