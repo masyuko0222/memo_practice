@@ -52,7 +52,7 @@ get '/memos' do
   @title = 'memos'
   @header = 'メモ一覧'
 
-  @all_memos= select_all_memos
+  @all_memos = select_all_memos
 
   erb :memos
 end
