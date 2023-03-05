@@ -6,3 +6,4 @@ gem 'erb_lint', require: false
 gem 'puma'
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'pg'
