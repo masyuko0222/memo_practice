@@ -1,10 +1,12 @@
 <form action='/memos/<%= @memo_uuid %>' method='POST'>
-  <div>
-    <input type='text' name='memo_title' value='<%= CGI.escapeHTML(@memo_title) %>' class='textbox'>
-  </div>
-  <div>
-    <textarea name='memo_content' class='textarea'><%= CGI.escapeHTML(@memo_content) %></textarea>
-  </div>
+  <% @memo_details.each do |record| %>
+    <div>
+      <input type='text' name='memo_title' value='<%= CGI.escapeHTML(record['memo_title']) %>' class='textbox'>
+    </div>
+    <div>
+      <textarea name='memo_content' class='textarea'><%= CGI.escapeHTML(record['memo_content']) %></textarea>
+    </div>
+  <% end %>
   <div>
     <input type='hidden' name='_method' value='PATCH'>
     <input type='submit' value='保存' class='button'>
